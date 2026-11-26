@@ -247,3 +247,48 @@
         width: 52px;
     }
 }
+
+/* Empty Cart Design */
+.empty-cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    gap: 15px;
+}
+
+.empty-cart i {
+    font-size: 80px;
+    color: #999;
+}
+
+.empty-cart h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.empty-cart p {
+    font-size: 15px;
+    color: #777;
+}
+
+
+
+.empty-cart-btn {
+    display: inline-block;
+    background-color: black;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.empty-cart-btn:hover {
+    background-color: #444;
+}

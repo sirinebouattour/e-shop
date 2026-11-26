@@ -10,10 +10,20 @@ document.addEventListener("DOMContentLoaded", () => {
         cartContainer.innerHTML = "";
 
         if (cart.length === 0) {
-            cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-            updateSummary();
-            return;
-        }
+    cartContainer.innerHTML = `
+        <div class="empty-cart">
+            <i class="bx bx-shopping-bag"></i>
+            <h2>Your cart is empty!</h2>
+            <p>Looks like you haven't added anything to your cart yet.</p>
+            <a href="./products.html" class="empty-cart-btn">
+                Continue Shopping
+            </a>
+        </div>
+    `;
+
+    updateSummary();
+    return;
+}
 
         cart.forEach((item, index) => {
             cartContainer.innerHTML += `

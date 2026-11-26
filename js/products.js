@@ -24,10 +24,13 @@ selected.addEventListener("click", function () {
 const productsContainer = document.querySelector(".all_products_items");
 const searchInput = document.getElementById("search");
 const filterBox = document.getElementById("filter_box");
+const sortSelect = document.getElementById("sort");
 
 // Get products & categories from localStorage
 const products = JSON.parse(localStorage.getItem("products")) || [];
 const categories = JSON.parse(localStorage.getItem("categories")) || []; // Extract unique categories
+let selectedCategory = null;
+let currentSearch = "";
 
 // Function to display products
 const displayProducts = (filteredProducts) => {
@@ -44,6 +47,44 @@ const displayProducts = (filteredProducts) => {
     });
 };
 
+const applyFilters = () => {
+    let filteredProducts = [...products];
+
+    // Filter by category
+    if (selectedCategory) {
+        filteredProducts = filteredProducts.filter(
+            product => product.category === selectedCategory
+        );
+    }
+
+    // Filter by search
+    if (currentSearch) {
+        filteredProducts = filteredProducts.filter(product =>
+            product.name.toLowerCase().includes(currentSearch) ||
+            product.category.toLowerCase().includes(currentSearch)
+        );
+    }
+
+    // Sort products
+    switch (sortSelect.value) {
+        case "price-asc":
+            filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
+            break;
+
+        case "price-desc":
+            filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
+            break;
+
+        case "name-asc":
+            filteredProducts.sort((a, b) =>
+                a.name.localeCompare(b.name)
+            );
+            break;
+    }
+
+    displayProducts(filteredProducts);
+};
+
 
 // Function to load categories dynamically
 const loadCategories = () => {
@@ -53,15 +94,15 @@ const loadCategories = () => {
         categoryItem.classList.add("filter_box_item");
         categoryItem.textContent = category.name;
         categoryItem.addEventListener("click", () => {
-            const filteredProducts = products.filter(product => product.category === category.name);
-            displayProducts(filteredProducts);
-        });
+    selectedCategory = category.name;
+    applyFilters();
+});
         filterBox.appendChild(categoryItem);
     });
 };
 
 // Initial display
-displayProducts(products);
+applyFilters();
 // Load categories dynamically
 loadCategories();
 // Update Navbar Cart total items when load
@@ -72,10 +113,7 @@ initProductEvents(productsContainer);
 
 // Search functionality
 searchInput.addEventListener("input", () => {
-    const searchTerm = searchInput.value.toLowerCase();
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.category.toLowerCase().includes(searchTerm)
-    );
-    displayProducts(filteredProducts);
+    currentSearch = searchInput.value.toLowerCase();
+    applyFilters();
 });
+sortSelect.addEventListener("change", applyFilters);
